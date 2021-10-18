@@ -83,6 +83,21 @@ app.post("/register", (req, res) => {
 app.get("/user", (req, res) => {
   res.send(req.user); // The req.user stores the entire user that been authenticated inside of it.
 });
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
+
+const checkAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/registerlogin");
+};
+
+app.get("/hidden", checkAuthenticated, (req, res) => {
+  res.render("hidden");
+});
 
 //--------------------------------------------END OF ROUTES-------------------------------------------------
 
